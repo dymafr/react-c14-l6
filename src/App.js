@@ -5,7 +5,8 @@ function App() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting, submitCount },
+    reset,
   } = useForm({
     defaultValues: {
       name: '',
@@ -31,6 +32,7 @@ function App() {
       });
       if (response.ok) {
         const newUser = await response.json();
+        reset();
         console.log(newUser);
       } else {
         console.eror('ERREUR');
@@ -144,7 +146,9 @@ function App() {
             <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>
           )}
         </div>
-        <button className="btn btn-primary">Sauvegarder</button>
+        <button disabled={isSubmitting} className="btn btn-primary">
+          Sauvegarder ({submitCount})
+        </button>
       </form>
     </div>
   );
