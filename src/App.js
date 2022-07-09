@@ -20,8 +20,24 @@ function App() {
     },
   });
 
-  function submit(values) {
-    console.log(values);
+  async function submit(values) {
+    try {
+      const response = await fetch('https://restapi.fr/api/testr', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log(newUser);
+      } else {
+        console.eror('ERREUR');
+      }
+    } catch (e) {
+      console.eror('ERREUR');
+    }
   }
 
   return (
