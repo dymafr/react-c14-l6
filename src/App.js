@@ -7,6 +7,8 @@ function App() {
     handleSubmit,
     formState: { errors, isSubmitting, submitCount },
     reset,
+    setError,
+    clearErrors,
   } = useForm({
     defaultValues: {
       name: '',
@@ -23,6 +25,7 @@ function App() {
 
   async function submit(values) {
     try {
+      clearErrors();
       const response = await fetch('https://restapi.fr/api/testr', {
         method: 'POST',
         body: JSON.stringify(values),
@@ -31,6 +34,7 @@ function App() {
         },
       });
       if (response.ok) {
+        throw new Error('Test erreur global'); // A commenter pour fonctionnement normal
         const newUser = await response.json();
         reset();
         console.log(newUser);
@@ -39,6 +43,7 @@ function App() {
       }
     } catch (e) {
       console.eror('ERREUR');
+      setError('globalError', e.message);
     }
   }
 
@@ -146,6 +151,9 @@ function App() {
             <p style={{ color: 'red' }}>{errors.confirmPassword.message}</p>
           )}
         </div>
+        {errors?.globalError && (
+          <p style={{ color: 'red' }}>{errors.globalError.message}</p>
+        )}
         <button disabled={isSubmitting} className="btn btn-primary">
           Sauvegarder ({submitCount})
         </button>
