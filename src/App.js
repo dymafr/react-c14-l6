@@ -34,7 +34,7 @@ function App() {
         },
       });
       if (response.ok) {
-        throw new Error('Test erreur global'); // A commenter pour fonctionnement normal
+        throw new Error('Test erreur globale'); // A commenter pour fonctionnement normal
         const newUser = await response.json();
         reset();
         console.log(newUser);
@@ -42,8 +42,7 @@ function App() {
         console.eror('ERREUR');
       }
     } catch (e) {
-      console.eror('ERREUR');
-      setError('globalError', e.message);
+      setError('globalError', { type: 'global', message: e.message });
     }
   }
 
